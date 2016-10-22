@@ -1,4 +1,4 @@
-# connecttech2016
+# ConnectTech 2016 - Kickass D3
 
 ## Resources
 <ul>
