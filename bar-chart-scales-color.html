@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Bar Chart v4 - Color Scales</title>
+  <link rel="stylesheet" type="text/css" href="css/samples.css">
+  <style type="text/css" media="screen">
+  div.bar {
+    background-color: orange;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    color: #000;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  div:after {
+    content: ' ';
+    display: table;
+    clear: both;
+  }
+  
+  div.bar .value {
+    font-family: Arial;
+    float: right;
+    margin-right: 5px;
+  }
+  </style>
+</head>
+
+<body class="sample">
+  <div class="container">
+    <h1>Bar Chart v4 - Color Scales</h1>
+    <div id="barChartDiv"></div>
+  </div>
+  <!-- list will be inserted/appended here -->
+</body>
+<script src="js/lib/d3.v4.min.js"></script>
+<script src="js/get-data.js"></script>
+<script>
+(function() {
+  /* global d3 */
+  // set the dimensions and margins of the graph
+  var container = d3.select('#barChartDiv'),
+    max,
+    transDuration = 1000,
+    enter, update, exit,
+    firstRender;
+
+  // set the scales
+  var xScale = d3.scaleLinear().rangeRound([0, 100]);
+
+  var colorScale = d3.scaleQuantize().range(["red", "yellow", "lime"]);
+
+
+  function render(data) {
+
+    var trans = d3.transition()
+      .duration(transDuration)
+      .ease(d3.easeQuadOut);
+
+    // set scales
+    xScale
+      .domain([0, d3.max(data, function(d) {
+        return d.sales;
+      })])
+      .range([0, 100]);
+
+    colorScale.domain(xScale.domain());
+
+
+    var bars = container.selectAll('div')
+      .data(data)
+
+    .enter().append("div")
+      .sort(sortDesc)
+      .style('width', '0%')
+      .attr('class', 'bar')
+      .style('background-color', getBgColor)
+      .style('width', function(d) {
+        return xScale(d.sales) + '%';
+      });
+
+    bars.append('span')
+      .attr('class', 'value')
+      .text(function(d) {
+        return d.sales;
+      });
+
+  }
+
+  // accessor function to return color based on "sales" value
+  function getBgColor(d) {
+    return colorScale(d.sales);
+  }
+
+  function getData(count, range) {
+    var arr = [];
+    d3.range(count).map(function(val) {
+
+      var obj = {
+        index: val,
+        sales: Math.random() * (range[1] - 1) | range[0]
+      };
+      arr.push(obj);
+    });
+
+    max = d3.max(arr);
+
+    render(arr);
+  }
+
+  function sortDesc(a, b) {
+    return a.sales < b.sales;
+  }
+
+  // get data for first time
+  getData(10, [50, 300]);
+
+
+})();
+</script>
+
+</html>

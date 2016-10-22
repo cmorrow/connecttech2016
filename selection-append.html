@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	    <title>Selections - Append</title>
+	    <link rel="stylesheet" type="text/css" href="css/samples.css">
+
+	    <style type="text/css" media="screen">
+	    	section.good {
+					background-color: green;
+					color:#fff;
+				}
+
+				section.bad {
+					background-color: red;
+					color:#fff;
+				}
+	    </style>
+	</head>
+	<body>
+		<!-- add .bad and .good sections -->
+		<div class="container">
+			<p id="debug"></p>
+			<section class="good"></section>
+			<section></section>
+			<section></section>	
+			<section></section>	
+		</div>
+		<!-- list will be inserted/appended here -->
+		
+	</body>
+	<script src="js/lib/d3.v4.min.js"></script>
+	<script>
+		(function(){
+			// select all section elements; change to select() to compare
+			var sections = d3.select('body').selectAll('section');
+
+			// append to each selected element
+			sections.append('h1').text('Hello World');
+
+			// accessor is passed the current element (d), the index (i), and the array (data)
+			// sections.append('h1').text(function(d, i){
+			// 	return 'Hello World' + i; 
+			// });
+
+			d3.select('#debug').text(sections.size() + ' sections selected');
+		})();
+	</script>
+</html>
+
+

@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	    <title>Bar Chart v3 - Scales</title>
+	    <link rel="stylesheet" type="text/css" href="css/samples.css">
+
+	    <style type="text/css" media="screen">
+	    	div.bar {
+	    		min-height: 28px;
+					background-color: orange;
+					padding: 5px 10px;
+					margin-bottom: 5px;
+					color: #000;
+					font-size: 24px;
+					font-weight: bold;
+				}
+
+				div:after {
+					content: ' ';
+					display:table;
+					clear: both;
+				}
+
+				div.bar .value {
+					font-family: Arial;
+					float:right;
+					margin-right: 5px;
+				}
+
+	    </style>
+	</head>
+	<body class="sample">
+		
+		<div class="container">
+			<h1>Bar Chart v3 - Scales</h1>
+			<div id="barChartDiv"></div>
+		</div>
+		<!-- list will be inserted/appended here -->
+		
+	</body>
+	<script src="js/lib/d3.v4.min.js"></script>
+	<script src="js/get-data.js"></script>
+	<script>
+		(function(){
+	  /* global d3 */
+	  var max;
+
+	  // set the scales
+	  var xScale = d3.scaleLinear().range([0,100]);
+
+	  function render() {
+
+	    var container = d3.select("#barChartDiv");
+	    var data = getSalesData();
+
+	    // format the data
+      data.forEach(function(d) {
+        d.sales = +d.sales;
+      });
+
+      max = d3.max(data, function(d) { return d.sales; });
+
+      // set scales
+      xScale.domain([0, d3.max(data, function(d) { return d.sales; })]);
+
+      // append the rectangles for the bar chart
+      var bars = container.selectAll("div")
+          .data(data)
+          .enter().append("div")
+          .attr("class", "bar")
+          .style("width", function(d) { 
+            return xScale(d.sales) + '%';
+          });
+
+      bars.append('span')
+      .attr('class', 'value')
+      .text(function(d){
+        return d.sales;
+      });
+	  }
+	  
+
+	  render();
+
+	})();
+	</script>
+</html>

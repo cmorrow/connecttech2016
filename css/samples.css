@@ -1,0 +1,66 @@
+body {
+	background-color: #000;
+	color: #fff;
+	font-family: 'Impact', sans-serif;
+}
+h1 {
+	font-size: 3em;
+}
+
+#debug {
+	font-size: 2em;
+}
+
+
+.container {
+	width: 90%;
+	margin: 0 auto;
+}
+
+section {
+	color: #000;
+	display:block;
+	padding: 5px 10px;
+	min-height: 50px;
+	background-color: #ccc;
+	margin-bottom: 10px;
+}
+
+
+.scale-form {
+	padding: 10px;
+	background-color: #666;
+}
+
+.scale-form label {
+	font-size: 2em;
+}
+
+.scale-form #input {
+	font-size: 2em;
+}
+
+.form-row {
+	margin-bottom:25px;
+}
+
+input.large {
+	font-size: 1em;
+	padding: 3px 10px;
+}
+
+input.large.short {
+	width: 150px;
+	text-aliugn:center;
+}
+
+.chart rect {
+	fill: #ffaa00;
+}
+
+#scaledValue {
+  width: 80px;
+  color: #000;
+  background-color: yellow;
+  text-align: center; 
+}

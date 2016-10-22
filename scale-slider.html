@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Scale Slider</title>
+  <link rel="stylesheet" type="text/css" href="css/samples.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="scale-form inner">
+      <div class="form-row">
+        <label for="domain">Input (domain):</label>
+        <input id="domainInput" class="large short" value="0,100">
+        <input id="scaleDomain" type="range" min="0" max="100" value="40" data-com.agilebits.onepassword.user-edited="yes">
+        <span id="input">100</span>
+      </div>
+      <div class="form-row">
+        <label for="range">Output (range): [0,800]</label>
+        <br>
+        <svg class="chart" id="range" width="800" height="30">
+          <rect width="800" height="30" x="0" y="0" style="fill: rgb(221, 221, 221);"></rect>
+          <rect width="0" height="30" x="0" y="0"></rect>
+        </svg>
+        <span id="output">0</span>
+        <div id="scaledValue"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="js/lib/d3.v4.min.js"></script>
+<script>
+(function() {
+  var id = '#range',
+    w = 800,
+    h = 30
+  scaleDomain = [0, 100],
+    scaleRange = [0, w];
+
+  var scale = d3.scaleLinear() //v3: d3.scale.linear()
+    .domain(scaleDomain)
+    .range(scaleRange);
+
+  var svg = d3.select(id)
+    .attr('width', w)
+    .attr('height', h);
+
+  svg.append('rect')
+    .style('fill', '#ddd')
+    .attr('width', w)
+    .attr('height', h)
+    .attr('x', 0)
+    .attr('y', 0);
+
+  var bar = svg.append('rect')
+    .attr('width', 0)
+    .attr('height', h)
+    .attr('x', 0)
+    .attr('y', 0);
+
+  var input = d3.select('#input');
+  var output = d3.select('#output');
+  var scaleDomainEl = d3.select('#scaleDomain');
+  var scaledValue = d3.select('#scaledValue');
+
+  function update(d) {
+    bar.attr('width', scale(d));
+    input.text(d);
+    var val = Math.round(scale(d));
+    console.log('percent: ' + (val / scaleRange[1]) * 100)
+    output.text(scaleRange[1]);
+    scaledValue
+      .style('margin-left', getPadding(val))
+      .text(val);
+  }
+
+  update(50);
+
+
+  // event listeners
+  d3.select('#domainInput').on('change', function() {
+    var arr = this.value.split(',');
+    scaleDomain = arr.map(function(val) {
+      return +val;
+    });
+
+    scaleDomainEl
+      .attr('min', scaleDomain[0])
+      .attr('max', scaleDomain[1]);
+
+    // update scale domain
+    scale.domain(scaleDomain)
+      .range(scaleRange);
+
+  });
+
+  scaleDomainEl.on('input', function() {
+    update(this.value);
+  });
+
+
+  function getPadding(val) {
+    if (val - 40 > 0) {
+      return (val - 40) + 'px';
+    }
+    return '0px';
+  }
+})();
+</script>
+
+</html>

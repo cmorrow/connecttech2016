@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	    <title>Selections - List</title>
+	    <link rel="stylesheet" type="text/css" href="css/samples.css">
+
+	    <style type="text/css" media="screen">
+	    	
+	    </style>
+	</head>
+	<body>
+
+		<div class="container">
+			<p id="debug"></p>
+			<!-- sections will be inserted/appended here -->
+
+		</div>
+
+	</body>
+	<script src="js/lib/d3.v4.min.js"></script>
+	<script>
+		(function(){
+			var data = ['Item one', 'Item two', 'Item Three', 'billy'];
+			var container = d3.select('body .container');
+
+			var sections = container.selectAll('section').data(data);
+
+			d3.select('#debug').text(sections.enter().size() + ' sections selected');
+
+			// entering elements
+			sections.enter()
+			.append('section')
+			.append('h1')
+			.text(function(d){
+				return d;
+			});
+			
+		})();
+	</script>
+</html>
